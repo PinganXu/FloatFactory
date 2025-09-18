@@ -3,6 +3,44 @@
 namespace floatfactory {
 namespace swimp {
 
+
+fp32_t cvt_fp16_to_fp32(fp16_t fp16_value) {
+    fp32_t res;
+    if (fp16_value.field.exp == 0 && fp16_value.field.man == 0) {
+        res.value = 0;
+        res.field.sign = fp16_value.field.sign;
+    }
+    else if (fp16_value.field.exp == 0 && fp16_value.field.man != 0) {
+        // subnormal
+        unsigned man = fp16_value.field.man;
+        unsigned nlz = 0;  // number of leading zeros  
+        if ((man & 0xff00U) == 0) { nlz += 8; man <<= 8; }
+        if ((man & 0xf000U) == 0) { nlz += 4; man <<= 4; }
+        if ((man & 0xc000U) == 0) { nlz += 2; man <<= 2; }
+        if ((man & 0x8000U) == 0) { nlz += 1; man <<= 1; }
+        nlz -= 6;
+        res.field.exp = 0x70U - nlz;  // 0x7fU - 0xfU -nlz
+        res.field.man = fp16_value.field.man << (nlz + 14);
+        res.field.sign = fp16_value.field.sign;
+    }
+    else if (fp16_value.field.exp == 0x1fU && fp16_value.field.man != 0) {
+        // NAN
+        res.value = 0x7fffffffU;  // qNAN
+    }
+    else if (fp16_value.field.exp == 0x1fU && fp16_value.field.man == 0) {
+        // Inf
+        res.value = 0x7f800000U;
+        res.field.sign = fp16_value.field.sign;
+    }
+    else {
+        res.field.exp = fp16_value.field.exp + 0x70U;
+        res.field.man = fp16_value.field.man << 13;
+        res.field.sign = fp16_value.field.sign;
+    }
+    return res;
+}
+
+
 fp4_t cvt_fp32_to_fp4(fp32_t fp32_value) {
     fp4_t res;
     res.value = 0;

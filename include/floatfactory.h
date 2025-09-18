@@ -20,9 +20,9 @@ enum ff_imp {
 
 typedef union {
     struct {
-        uint64_t sign: 1;
-        uint64_t exp : 11;
         uint64_t man : 52;
+        uint64_t exp : 11;
+        uint64_t sign: 1;
     } field;
     uint64_t value;
     double   float_value;
@@ -30,9 +30,9 @@ typedef union {
 
 typedef union {
     struct {
-        uint32_t sign: 1;
-        uint32_t exp : 8;
         uint32_t man : 23;
+        uint32_t exp : 8;
+        uint32_t sign: 1;
     } field;
     uint32_t value;
     float    float_value;
@@ -40,45 +40,45 @@ typedef union {
 
 typedef union {
     struct {
-        uint16_t sign: 1;
-        uint16_t exp : 5;
         uint16_t man : 10;
+        uint16_t exp : 5;
+        uint16_t sign: 1;
     } field;
     uint16_t value;
 } fp16_t;
 
 typedef union {
     struct {
-        uint16_t sign: 1;
-        uint16_t exp : 8;
         uint16_t man : 7;
+        uint16_t exp : 8;
+        uint16_t sign: 1;
     } field;
     uint16_t value;
 } bf16_t;
 
 typedef union {
     struct {
-        uint8_t sign: 1;
-        uint8_t exp : 4;
         uint8_t man : 3;
+        uint8_t exp : 4;
+        uint8_t sign: 1;
     } field;
     uint8_t value;
 } fp8_t;
 
 typedef union {
     struct {
-        uint8_t sign: 1;
-        uint8_t exp : 5;
         uint8_t man : 2;
+        uint8_t exp : 5;
+        uint8_t sign: 1;
     } field;
     uint8_t value;
 } bf8_t;
 
 typedef union {
     struct {
-        uint8_t sign: 1;
-        uint8_t exp : 2;
-        uint8_t man : 1;
+        uint8_t man     : 1;
+        uint8_t exp     : 2;
+        uint8_t sign    : 1;
         uint8_t reserved: 4;
     } field;
     uint8_t value;
