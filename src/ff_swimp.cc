@@ -19,8 +19,8 @@ fp32_t cvt_fp16_to_fp32(fp16_t fp16_value) {
         if ((man & 0xc000U) == 0) { nlz += 2; man <<= 2; }
         if ((man & 0x8000U) == 0) { nlz += 1; man <<= 1; }
         nlz -= 6;
-        res.field.exp = 0x70U - nlz;  // 0x7fU - 0xfU -nlz
-        res.field.man = fp16_value.field.man << (nlz + 14);
+        res.field.exp  = 0x70U - nlz;  // 0x7fU - 0xfU -nlz
+        res.field.man  = fp16_value.field.man << (nlz + 14);
         res.field.sign = fp16_value.field.sign;
     }
     else if (fp16_value.field.exp == 0x1fU && fp16_value.field.man != 0) {
@@ -37,6 +37,12 @@ fp32_t cvt_fp16_to_fp32(fp16_t fp16_value) {
         res.field.man = fp16_value.field.man << 13;
         res.field.sign = fp16_value.field.sign;
     }
+    return res;
+}
+
+fp32_t cvt_bf16_to_fp32(bf16_t bf16_value) {
+    fp32_t res;
+    res.value = bf16_value.value << 16;
     return res;
 }
 
