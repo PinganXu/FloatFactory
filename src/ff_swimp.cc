@@ -1,4 +1,6 @@
+#include <assert.h>
 #include "floatfactory.h"
+
 
 namespace floatfactory {
 namespace swimp {
@@ -90,6 +92,34 @@ fp4_t cvt_fp32_to_fp4(fp32_t fp32_value) {
         // NAN converts to {0b0111}
         res.field.sign = (fp32_value.field.exp == 0xff && fp32_value.field.man != 0) ? 0x0U : fp32_value.field.sign;
     }
+    return res;
+}
+
+fp4_t cvt_fp16_to_fp4(fp16_t fp16_value) {
+    fp32_t fp32_value = cvt_fp16_to_fp32(fp16_value);
+    return cvt_fp32_to_fp4(fp32_value);
+}
+
+fp4_t cvt_bf16_to_fp4(bf16_t bf16_value) {
+    fp32_t fp32_value = cvt_bf16_to_fp32(bf16_value);
+    return cvt_fp32_to_fp4(fp32_value);
+}
+
+fp16_t cvt_fp4_to_fp16(fp4_t fp4_value) {
+    fp16_t res;
+    switch (fp4_value.value & 0x7U) {
+        case 0x0U: res.value = 0x0U;    break;
+        case 0x1U: res.value = 0x3800U; break;
+        case 0x2U: res.value = 0x3c00U; break;
+        case 0x3U: res.value = 0x3e00U; break;
+        case 0x4U: res.value = 0x4000U; break;
+        case 0x5U: res.value = 0x4200U; break;
+        case 0x6U: res.value = 0x4400U; break;
+        case 0x7U: res.value = 0x4600U; break;
+        default:
+            assert(false && "this condition will not appear!");
+    }
+    res.field.sign = fp4_value.field.sign;
     return res;
 }
 

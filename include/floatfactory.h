@@ -123,6 +123,9 @@ namespace swimp {
 
 
     fp4_t cvt_fp32_to_fp4(fp32_t);
+    fp4_t cvt_fp16_to_fp4(fp16_t);
+    fp4_t cvt_bf16_to_fp4(bf16_t);
+    fp16_t cvt_fp4_to_fp16(fp4_t);
 
 
 }  // namespace floatfactory::swimp
