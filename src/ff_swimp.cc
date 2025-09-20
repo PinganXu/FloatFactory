@@ -123,5 +123,10 @@ fp16_t cvt_fp4_to_fp16(fp4_t fp4_value) {
     return res;
 }
 
+fp32_t cvt_fp4_to_fp32(fp4_t fp4_value) {
+    fp16_t fp16_value = cvt_fp4_to_fp16(fp4_value);
+    return cvt_fp16_to_fp32(fp16_value);
+}
+
 } // namespace swimp
 } // namespace floatfactory
